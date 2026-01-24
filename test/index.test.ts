@@ -1,7 +1,6 @@
 import {afterAll, beforeAll, describe, expect, it} from "vitest";
-import {AnvilContainer, StartedAnvilContainer} from "../src/index.js";
-import {createTestClient, http, parseEther, publicActions, TransactionReceipt, walletActions} from "viem";
-import {foundry} from "viem/chains";
+import {AddressString, AnvilContainer, LogVerbosity, StartedAnvilContainer} from "../src/index.js";
+import {TransactionReceipt} from "viem";
 
 
 describe("AnvilContainer", () => {
@@ -9,8 +8,9 @@ describe("AnvilContainer", () => {
 
     beforeAll(async () => {
         container = await new AnvilContainer()
-            .verboseLogs()
+            .verboseLogs(LogVerbosity.Five)
             .jsonLogFormat()
+            .withRandomMnemonic()
             .start();
     }, 60000);
 
@@ -20,39 +20,25 @@ describe("AnvilContainer", () => {
 
     it("should start and be reachable", async () => {
 
-        const client = createTestClient({
-            chain: foundry,
-            mode: 'anvil',
-            transport: http(container.getRpcUrl()),
-        }).extend(publicActions)
-            .extend(walletActions);
-
-        const blockNumber = await client.getBlockNumber();
+        const blockNumber = await container.client.getBlockNumber();
         expect(blockNumber).toBeDefined();
         expect(typeof blockNumber).toBe("bigint");
     });
 
-    it("test transaction", async () => {
-        const client = createTestClient({
-            chain: foundry,
-            mode: 'anvil',
-            transport: http(container.getRpcUrl()),
-        }).extend(publicActions)
-            .extend(walletActions);
+    it("test send transaction", async () => {
 
-        const hash = await client.sendUnsignedTransaction({
-            from: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', // Anvil default account
-            to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
-            value: parseEther('1') // Sending 1 ETH
-        });
+        let addresses = await container.getAddresses();
+
+        const hash: AddressString = await container.sendTransaction(addresses[0], addresses[1], "1");
         expect(hash).toBeDefined();
 
-        await client.mine({blocks: 1});
-        const receipt: TransactionReceipt = await client.waitForTransactionReceipt({hash});
+        await container.client.mine({blocks: 1});
+        const receipt: TransactionReceipt = await container.client.waitForTransactionReceipt({hash});
 
         console.log(receipt);
         expect(receipt.status).toBe('success');
         expect(receipt.transactionHash).toBeDefined();
-
+        expect(receipt.from).toBe(addresses[0].toLowerCase() as AddressString);
+        expect(receipt.to).toBe(addresses[1].toLowerCase() as AddressString);
     });
 });

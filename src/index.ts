@@ -1,4 +1,6 @@
-import {GenericContainer, StartedTestContainer, Wait} from "testcontainers";
+import {AbstractStartedContainer, GenericContainer, StartedTestContainer, Wait} from "testcontainers";
+import {createTestClient, http, parseEther, publicActions, walletActions} from "viem";
+import {foundry} from "viem/chains";
 
 const BASE_ENTRYPOINT = [
     "anvil",
@@ -7,11 +9,13 @@ const BASE_ENTRYPOINT = [
     "--auto-impersonate"
 ];
 
-/*const LOG_LEVEL_1 = "-v";
-const LOG_LEVEL_2 = "-vv";
-const LOG_LEVEL_3 = "-vvv";
-const LOG_LEVEL_4 = "-vvvv";*/
-const LOG_LEVEL_5 = "-vvvvv";
+export enum LogVerbosity {
+    One = "-v",
+    Two = "-vv",
+    Three = "-vvv",
+    Four = "-vvvv",
+    Five = "-vvvvv"
+}
 
 export class AnvilContainer extends GenericContainer {
 
@@ -25,14 +29,21 @@ export class AnvilContainer extends GenericContainer {
 
     private setCliFlag(flag: string, value: string) {
         if (!this.entryPoint.includes(flag)) {
-            this.entryPoint.push("flag", value);
+            this.entryPoint.push(flag, value);
             this.entryPoint[this.entryPoint.indexOf(flag) + 1] = value;
         }
     }
 
-    public verboseLogs() {
-        if (!this.entryPoint.includes(LOG_LEVEL_5)) {
-            this.entryPoint.push(LOG_LEVEL_5);
+    public withRandomMnemonic() {
+        if (!this.entryPoint.includes('--mnemonic-random')) {
+            this.entryPoint.push('--mnemonic-random');
+        }
+        return this;
+    }
+
+    public verboseLogs(logVerbosity: LogVerbosity) {
+        if (!this.entryPoint.includes(logVerbosity)) {
+            this.entryPoint.push(logVerbosity);
         }
         return this;
     }
@@ -61,12 +72,47 @@ export class AnvilContainer extends GenericContainer {
         this.withEntrypoint(this.entryPoint);
 
         const startedContainer = await super.start();
-        return Object.assign(startedContainer, {
-            getRpcUrl: () => `http://${startedContainer.getHost()}:${startedContainer.getMappedPort(8545)}`,
-        }) as StartedAnvilContainer;
+        return new StartedAnvilContainer(startedContainer,
+            `http://${startedContainer.getHost()}:${startedContainer.getMappedPort(8545)}`);
     }
 }
 
-export type StartedAnvilContainer = StartedTestContainer & {
-    getRpcUrl(): string;
-};
+export  type AddressString = `0x${string}`;
+
+export class StartedAnvilContainer extends AbstractStartedContainer {
+    private readonly _rpcUrl;
+    private readonly _client;
+
+    constructor(startedTestContainer: StartedTestContainer, url: string) {
+        super(startedTestContainer);
+        this._rpcUrl = url;
+
+        this._client = createTestClient({
+            chain: foundry,
+            mode: 'anvil',
+            transport: http(url),
+        }).extend(publicActions)
+            .extend(walletActions);
+    }
+
+    get rpcUrl() {
+        return this._rpcUrl;
+    }
+
+    get client() {
+        return this._client;
+    }
+
+    getAddresses() {
+        return this._client.getAddresses();
+    }
+
+    sendTransaction(from: AddressString, to: AddressString, amount: string) {
+        return this._client.sendTransaction({
+            account: from,
+            from: from,
+            to: to,
+            value: parseEther(amount)
+        });
+    }
+}
