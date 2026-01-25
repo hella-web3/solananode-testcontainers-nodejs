@@ -1,7 +1,6 @@
 import {afterAll, beforeAll, describe, expect, it} from "vitest";
-import {AddressString, AnvilContainer, LogVerbosity, StartedAnvilContainer} from "../src/index.js";
+import {AnvilContainer, HexString, LogVerbosity, StartedAnvilContainer} from "../src/index.js";
 import {TransactionReceipt} from "viem";
-
 
 describe("AnvilContainer", () => {
     let container: StartedAnvilContainer;
@@ -29,17 +28,15 @@ describe("AnvilContainer", () => {
 
         let addresses = await container.addresses();
 
-        const hash: AddressString = await container.sendEthTransaction(addresses[0], addresses[1], "1");
-        expect(hash).toBeDefined();
+        const receipt: TransactionReceipt = await container.sendEthTransaction(
+            addresses[0],
+            addresses[1],
+            "1");
 
-        await container.client.mine({blocks: 1});
-        const receipt: TransactionReceipt = await container.client.waitForTransactionReceipt({hash});
-
-        console.log(receipt);
         expect(receipt.status).toBe('success');
         expect(receipt.transactionHash).toBeDefined();
-        expect(receipt.from).toBe(addresses[0].toLowerCase() as AddressString);
-        expect(receipt.to).toBe(addresses[1].toLowerCase() as AddressString);
+        expect(receipt.from).toBe(addresses[0].toLowerCase() as HexString);
+        expect(receipt.to).toBe(addresses[1].toLowerCase() as HexString);
     });
 
     it("test deploy contract", async () => {
@@ -48,10 +45,13 @@ describe("AnvilContainer", () => {
 
         const receipt: TransactionReceipt = await container.deployContract(
             container.contractAbi('WrappedEther/WrappedEther.json'),
-            container.contractBytecode('WrappedEther/WrappedEther.bin'),
+            container.contractBytecode('WrappedEther/WrappedEther.bin') as HexString,
             addresses[0]);
-        expect(receipt).toBeDefined();
 
-        console.log(receipt);
+        expect(receipt).toBeDefined();
+        expect(receipt.status).toBe('success');
+        expect(receipt.transactionHash).toBeDefined();
+        expect(receipt.from).toBe(addresses[0].toLowerCase() as HexString);
+        expect(receipt.contractAddress).toBeDefined();
     });
 });
