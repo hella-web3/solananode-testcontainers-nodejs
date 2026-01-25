@@ -241,7 +241,7 @@ export class StartedAnvilContainer extends AbstractStartedContainer {
      * Get local testing artifact contract ABI for deployment to anvil.
      * @example
      * ```typescript
-     * contractAbi('WrappedEther/WrappedEther.json')
+     * contractAbi('WrappedEther/WrappedEther.json');
      * ```
      *
      * @param abiLocation location of the ABI file relative to the test/artifacts directory
@@ -255,7 +255,7 @@ export class StartedAnvilContainer extends AbstractStartedContainer {
      * Get local testing artifact contract bytecode for deployment to anvil.
      * @example
      * ```typescript
-     * contractBytecode('WrappedEther/WrappedEther.bin')
+     * contractBytecode('WrappedEther/WrappedEther.bin');
      * ```
      *
      * @param binLocation location of the bytecode file relative to the test/artifacts directory
