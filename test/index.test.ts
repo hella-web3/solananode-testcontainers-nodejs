@@ -4,7 +4,7 @@ import {
   LogVerbosity,
   StartedAnvilContainer,
 } from "../src";
-import {Abi, parseEther, parseEventLogs, TransactionReceipt} from "viem";
+import { Abi, parseEther, parseEventLogs, TransactionReceipt } from "viem";
 
 describe("AnvilContainer", () => {
   let container: StartedAnvilContainer;
@@ -68,7 +68,7 @@ describe("AnvilContainer", () => {
       account: addresses[0],
     });
 
-    await container.client.mine({blocks: 1});
+    await container.client.mine({ blocks: 1 });
     const wrapEthReceipt = await container.client.waitForTransactionReceipt({
       hash: depositHash,
     });
