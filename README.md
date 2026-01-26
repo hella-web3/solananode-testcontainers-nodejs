@@ -38,7 +38,7 @@ streamlined helper methods to interact with the node.
 Install the module:
 
 ```shell
-pnpm add -D @hellaweb3/foundry-anvil-testcontainers
+pnpm add -D @hellaweb3/foundryanvil-testcontainers-nodejs
 ```
 
 ### Setup
