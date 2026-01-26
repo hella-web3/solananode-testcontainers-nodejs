@@ -80,14 +80,14 @@ it("test send transaction", async () => {
 
 | Script                 | Description                       |
 | ---------------------- | --------------------------------- |
-| `bun run dev`          | Start development mode with watch |
-| `bun run build`        | Build for production              |
-| `bun run test`         | Run tests                         |
-| `bun run test:watch`   | Run tests in watch mode           |
-| `bun run lint`         | Lint code                         |
-| `bun run format`       | Format code                       |
-| `bun run format:check` | Check if code is formatted        |
-| `bun run typecheck`    | Run TypeScript type checking      |
+| `pnpm run dev`         | Start development mode with watch |
+| `pnpm run build`       | Build for production              |
+| `pnpm run test`        | Run tests                         |
+| `pnpm run test:watch`  | Run tests in watch mode           |
+| `pnpm run lint`        | Lint code                         |
+| `pnpm run format`      | Format code                       |
+| `pnpm run format:check` | Check if code is formatted        |
+| `pnpm run typecheck`   | Run TypeScript type checking      |
 
 ---
 
@@ -125,7 +125,7 @@ This library exports both ESM and CommonJS formats, with full TypeScript support
 
 ```bash
 # Build the package
-bun run build
+pnpm run build
 
 # Publish to npm
 npm publish
