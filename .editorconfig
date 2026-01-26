@@ -10,4 +10,3 @@ end_of_line = lf
 
 [*.{js,jsx,ts,tsx,json,css,scss,md}]
 max_line_length = 80
-typescript_spaces_within_imports = true
