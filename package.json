@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Chris Anatalio",
+  "files": [
+    "dist",
+    "src"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -20,34 +24,63 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=20"
-  },
   "scripts": {
     "dev": "tsdx dev",
     "build": "tsdx build",
     "test": "tsdx test",
     "test:watch": "tsdx test --watch",
+    "test-jest": "jest --colors --injectGlobals",
     "lint": "tsdx lint",
-    "format": "tsdx format",
-    "format:check": "tsdx format --check",
+    "eslint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "typecheck": "tsdx typecheck",
     "prepublishOnly": "bun run build"
-  },
-  "devDependencies": {
-    "@types/node": "^25.0.10",
-    "bunchee": "^6.9.4",
-    "jest": "^30.2.0",
-    "tsdx": "^2.0.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
   },
   "dependencies": {
     "testcontainers": "^11.11.0",
     "viem": "^2.44.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.0.10",
+    "bunchee": "^6.9.4",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.1.0",
+    "jest": "^30.2.0",
+    "prettier": "^3.8.1",
+    "ts-jest": "^29.4.6",
+    "tsdx": "^2.0.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1",
+    "vitest": "^4.0.18"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "app.module.ts",
+      "main.ts",
+      ".*\\.module\\.ts",
+      ".*\\.dto\\.ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testEnvironment": "node",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    }
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
