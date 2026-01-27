@@ -39,18 +39,15 @@
   "scripts": {
     "dev": "tsdx dev",
     "build": "tsdx build",
-    "test": "tsdx test",
-    "test:watch": "tsdx test --watch",
-    "test-jest": "jest --colors --injectGlobals",
-    "lint": "tsdx lint",
+    "test": "jest --colors --injectGlobals",
     "eslint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "typecheck": "tsdx typecheck",
+    "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
-    "check": "pnpm build && pnpm eslint && pnpm test-jest"
+    "check": "pnpm build && pnpm typecheck && pnpm eslint && pnpm test"
   },
   "dependencies": {
     "testcontainers": "^11.11.0",
-    "viem": "^2.44.4"
+    "viem": "^2.45.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
@@ -94,6 +91,6 @@
     }
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

@@ -94,16 +94,13 @@ it("test send transaction", async () => {
 
 ## Scripts
 
-| Script                  | Description                       |
-|-------------------------|-----------------------------------|
-| `pnpm run dev`          | Start development mode with watch |
-| `pnpm run build`        | Build for production              |
-| `pnpm run test`         | Run tests                         |
-| `pnpm run test:watch`   | Run tests in watch mode           |
-| `pnpm run lint`         | Lint code                         |
-| `pnpm run format`       | Format code                       |
-| `pnpm run format:check` | Check if code is formatted        |
-| `pnpm run typecheck`    | Run TypeScript type checking      |
+| Script              | Description                       |
+|---------------------|-----------------------------------|
+| `pnpm dev`          | Start development mode with watch |
+| `pnpm build`        | Build for production              |
+| `pnpm test`         | Run tests                         |
+| `pnpm eslint`       | Lint code                         |
+| `pnpm typecheck`    | Run TypeScript type checking      |
 
 ---
 
@@ -122,11 +119,9 @@ const container = await new AnvilContainer()
 
 ## Tools
 
-TSDX wraps these modern, high-performance tools:
-
 - **[Bunchee](https://github.com/huozhi/bunchee)** - Zero-config bundler for npm
   packages
-- **[Vitest](https://vitest.dev/)** - Next-generation testing framework
+- **[Jest](https://jestjs.io/)** - Testing framework
 
 ## Module Formats
 
@@ -144,10 +139,13 @@ support:
 pnpm run build
 
 # Publish to npm
-npm publish
+np --no-publish
+
+# Trigger GitHub release workflow
+git push origin --tags
 ```
 
-We recommend using [np](https://github.com/sindresorhus/np) for publishing.
+This will trigger the release.yml and publish.yml workflows.
 
 ---
 
