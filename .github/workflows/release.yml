@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write # Required to create releases
+  id-token: write # Required for NPM provenance in the called publish workflow
 
 jobs:
   release:
