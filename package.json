@@ -1,18 +1,14 @@
 {
-  "name": "@hellaweb3/foundryanvil-testcontainers-nodejs",
-  "description": "This Typescript module provides a Fluent API style method of configuring and starting a Anvil testcontainers node. During your test execution, the module provides a viem test client and streamlined helper methods to interact with the node.",
-  "homepage": "https://github.com/hella-web3/foundryanvil-testcontainers-nodejs#readme",
-  "repository": "https://github.com/hella-web3/foundryanvil-testcontainers-nodejs",
-  "bugs": "https://github.com/hella-web3/foundryanvil-testcontainers-nodejs/issues",
+  "name": "@hellaweb3/solananode-testcontainers-nodejs",
+  "description": "This Typescript module provides a Fluent API style method of configuring and starting a Solana Test Validator testcontainers node. During your test execution, the module provides a test client and streamlined helper methods to interact with the node.",
+  "homepage": "https://github.com/hella-web3/solananode-testcontainers-nodejs#readme",
+  "repository": "https://github.com/hella-web3/solananode-testcontainers-nodejs",
+  "bugs": "https://github.com/hella-web3/solananode-testcontainers-nodejs/issues",
   "keywords": [
     "testcontainers",
-    "foundry",
-    "anvil",
-    "ethereum",
-    "viem",
-    "evm"
+    "solana"
   ],
-  "version": "0.1.2",
+  "version": "0.1.0",
   "license": "MIT",
   "author": "Chris Anatalio",
   "files": [
@@ -46,8 +42,7 @@
     "check": "pnpm build && pnpm typecheck && pnpm eslint && pnpm test"
   },
   "dependencies": {
-    "testcontainers": "^11.11.0",
-    "viem": "^2.45.0"
+    "testcontainers": "^11.11.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
