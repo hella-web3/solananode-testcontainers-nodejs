@@ -5,64 +5,75 @@ import {
   Wait,
 } from "testcontainers";
 
-const BASE_ENTRYPOINT = ["solana-test-validator"];
-
 /**
- * A Testcontainer for Foundry's Anvil.
+ * A Testcontainer for Wiremock.
  *
  * @example
  * ```typescript
- * const container = await new AnvilContainer().start();
+ * const container = await new WiremockContainer().start();
  * ```
  */
-export class SolanaValidatorContainer extends GenericContainer {
-  private entryPoint: string[] = BASE_ENTRYPOINT;
-
+export class WiremockContainer extends GenericContainer {
   /**
-   * Creates a new SolanaValidatorContainer.
+   * Creates a new WiremockContainer.
    * @example
    * ```typescript
-   * const container = await new SolanaValidatorContainer().start();
+   * const container = await new WiremockContainer().start();
    * ```
-   * @param image The docker image to use. Defaults to "hellaweb3/foundry-anvil:1.6".
+   * @param image The docker image to use. Defaults to "wiremock/wiremock".
    */
-  constructor(image: string = "solanalabs/solana:stable") {
+  constructor(image: string = "wiremock/wiremock") {
     super(image);
-    this.withExposedPorts(8545);
-    this.withWaitStrategy(Wait.forLogMessage(/Listening on 0\.0\.0\.0:8899/));
+    this.withExposedPorts(8080);
+    this.withWaitStrategy(Wait.forListeningPorts());
   }
 
   /**
-   * Starts the container and returns a {@link StartedSolanaValidatorContainer}.
+   * Adds mappings to the Wiremock container.
+   * @example
+   * ```typescript
+   * const container = await new WiremockContainer()
+   *   .withMappings("./test/__mocks__/wiremock")
+   *   .start();
+   * ```
+   * @param directory The directory containing the mappings and __files.
+   */
+  public withMappings(directory: string) {
+    this.withCopyDirectoriesToContainer([{
+      source: `${directory}/__files`,
+      target: "/home/wiremock/__files",
+    }]);
+    this.withCopyDirectoriesToContainer([{
+      source: `${directory}/mappings`,
+      target: "/home/wiremock/mappings",
+    }]);
+
+    return this;
+  }
+
+  /**
+   * Starts the container and returns a {@link StartedWiremockContainer}.
    * @returns A promise that resolves to the started container.
    */
-  public override async start(): Promise<StartedSolanaValidatorContainer> {
-    this.entryPoint.push("--host", "0.0.0.0");
-    this.withEntrypoint(this.entryPoint);
-
+  public override async start(): Promise<StartedWiremockContainer> {
     const startedContainer = await super.start();
-    return new StartedSolanaValidatorContainer(
+    return new StartedWiremockContainer(
       startedContainer,
-      `http://${startedContainer.getHost()}:${startedContainer.getMappedPort(8899)}`,
+      `http://${startedContainer.getHost()}:${startedContainer.getMappedPort(8080)}`,
     );
   }
 }
 
 /**
- * Represents a hex string with a 0x prefix.
+ * A started Wiremock container with helper methods for interacting with the node.
  */
-export type HexString = `0x${string}`;
-
-/**
- * A started Anvil container with helper methods for interacting with the node.
- */
-export class StartedSolanaValidatorContainer extends AbstractStartedContainer {
+export class StartedWiremockContainer extends AbstractStartedContainer {
   private readonly _rpcUrl;
 
   /**
-   * Creates a new StartedAnvilContainer.
+   * Creates a new StartedWiremockContainer.
    * @param startedTestContainer The underlying TestContainer.
-   * @param url The RPC URL of the started container.
+   * @param url The URL of the started container.
    */
   constructor(startedTestContainer: StartedTestContainer, url: string) {
     super(startedTestContainer);
@@ -70,7 +81,7 @@ export class StartedSolanaValidatorContainer extends AbstractStartedContainer {
   }
 
   /**
-   * Gets the RPC URL of the Anvil node.
+   * Gets the URL of the Wiremock node.
    */
   get rpcUrl() {
     return this._rpcUrl;
