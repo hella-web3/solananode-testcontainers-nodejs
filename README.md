@@ -1,12 +1,12 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-<h1>WireMock Testcontainers Node.js</h1>
+<h1>WireMock Testcontainers Node.js Typescript</h1>
 
 <p>A library for easily using WireMock with Testcontainers in Node.js applications.</p>
 
-<a href="https://github.com/hella-web3/wiremock-testcontainers-nodejs/actions/workflows/main.yml">
-    <img alt="Build Status" src="https://github.com/hella-web3/wiremock-testcontainers-nodejs/actions/workflows/main.yml/badge.svg" />
+<a href="https://github.com/hella-web3/wiremock-testcontainers-nodejs/actions/workflows/main.yml/badge.svg">
+    <img alt="Build Status" src="https://github.com/hella-web3/wiremock-testcontainers-nodejs/actions/workflows/main.yml" />
 </a>
 
 <a href="https://www.npmjs.com/package/@hellaweb3/wiremock-testcontainers-nodejs">
@@ -21,7 +21,8 @@
 
 ## Description
 
-`wiremock-testcontainers-nodejs` spins up a [WireMock](https://wiremock.org/)
+`wiremock-testcontainers-nodejs` is a Typescript nodejs library that spins up
+a [WireMock](https://wiremock.org/)
 instance with [Testcontainers](https://node.testcontainers.org/). It provides a
 fluent API to configure and start WireMock
 containers, including support for loading mappings and files from recorded
@@ -114,6 +115,10 @@ const container = await new WiremockContainer()
    `beforeAll` hooks that start containers.
 4. **Resource Management**: Always ensure `container.stop()` is called in an
    `afterAll` or `afterEach` block to prevent orphaned containers.
+
+## Maintainers
+
+Maintained by [Hella Labs](https://hellaweb3.com/).
 
 ## License
 
