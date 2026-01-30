@@ -11,12 +11,14 @@
     "mock",
     "api"
   ],
-  "version": "0.1.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "Chris Anatalio",
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,6 +43,7 @@
     "test": "jest --colors --injectGlobals",
     "lint": "tsdx lint",
     "typecheck": "tsc --noEmit",
+    "prepack": "pnpm build",
     "prepublishOnly": "pnpm run build",
     "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm test"
   },
