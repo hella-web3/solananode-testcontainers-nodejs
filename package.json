@@ -12,6 +12,9 @@
     "api"
   ],
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "author": "Chris Anatalio",
   "files": [
