@@ -1,12 +1,15 @@
 {
-  "name": "@hellaweb3/solananode-testcontainers-nodejs",
-  "description": "This Typescript module provides a Fluent API style method of configuring and starting a Solana Test Validator testcontainers node. During your test execution, the module provides a test client and streamlined helper methods to interact with the node.",
-  "homepage": "https://github.com/hella-web3/solananode-testcontainers-nodejs#readme",
-  "repository": "https://github.com/hella-web3/solananode-testcontainers-nodejs",
-  "bugs": "https://github.com/hella-web3/solananode-testcontainers-nodejs/issues",
+  "name": "@hellaweb3/wiremock-testcontainers-nodejs",
+  "description": "A Node.js library for using WireMock with Testcontainers, providing a fluent API for easy setup and integration testing.",
+  "homepage": "https://github.com/hella-web3/wiremock-testcontainers-nodejs#readme",
+  "repository": "https://github.com/hella-web3/wiremock-testcontainers-nodejs",
+  "bugs": "https://github.com/hella-web3/wiremock-testcontainers-nodejs/issues",
   "keywords": [
     "testcontainers",
-    "solana"
+    "wiremock",
+    "testing",
+    "mock",
+    "api"
   ],
   "version": "0.1.0",
   "license": "MIT",
